@@ -261,16 +261,11 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc)
             current_acc += ADC_VC[2 * i + 1];
         }
 
-        voltage_acc /= 20.0f;
-        voltage_acc /= 4095.0f;
-        voltage_acc *= 100.0f;
+        float voltage_media = voltage_acc / 25.0f;
+        float current_media = current_acc / 25.0f;
 
-        current_acc /= 20.0f;
-        current_acc /= 4095.0f;
-        current_acc *= 100.0f;
-
-        Voltage = voltage_acc;
-        Current = current_acc;
+        Voltage = 0.0122f * voltage_media;
+        Current = 0.18f * current_media - 350.10f;
     }
 
     if (hadc->Instance == ADC2)
@@ -284,14 +279,15 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc)
             temp_acc     += ADC_TP[2 * i + 1];
         }
 
-        pressure_acc /= 20.0f;
-        pressure_acc /= 4095.0f;
-        Pressure = pressure_acc;
+        float pressure_media = pressure_acc / 25.0f;
+        float temp_media     = temp_acc / 25.0f;
 
-        temp_acc /= 20.0f;
-        temp_acc /= 4095.0f;
-        temp_acc *= 100.0f;
-        Temp = temp_acc;
+        /* Pressão */
+        pressure_media += 115.0f;
+        Pressure = 2.0f * (pressure_media - 2293.0f) / 1311.0f;
+
+        /* Temperatura */
+        Temp = -0.0338f * temp_media + 113.0f;
     }
 }
 
@@ -308,16 +304,11 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
             current_acc += ADC_VC[2 * i + 1];
         }
 
-        voltage_acc /= 20.0f;
-        voltage_acc /= 4095.0f;
-        voltage_acc *= 100.0f;
+        float voltage_media = voltage_acc / 25.0f;
+        float current_media = current_acc / 25.0f;
 
-        current_acc /= 20.0f;
-        current_acc /= 4095.0f;
-        current_acc *= 100.0f;
-
-        Voltage = voltage_acc;
-        Current = current_acc;
+        Voltage = 0.0122f * voltage_media;
+        Current = 0.18f * current_media - 350.10f;
     }
 
     if (hadc->Instance == ADC2)
@@ -331,14 +322,15 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
             temp_acc     += ADC_TP[2 * i + 1];
         }
 
-        pressure_acc /= 20.0f;
-        pressure_acc /= 4095.0f;
-        Pressure = pressure_acc;
+        float pressure_media = pressure_acc / 25.0f;
+        float temp_media     = temp_acc / 25.0f;
 
-        temp_acc /= 20.0f;
-        temp_acc /= 4095.0f;
-        temp_acc *= 100.0f;
-        Temp = temp_acc;
+        /* Pressão */
+        pressure_media += 115.0f;
+        Pressure = 2.0f * (pressure_media - 2293.0f) / 1311.0f;
+
+        /* Temperatura */
+        Temp = -0.0338f * temp_media + 113.0f;
     }
 }
 
