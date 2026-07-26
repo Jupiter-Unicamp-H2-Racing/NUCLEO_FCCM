@@ -261,11 +261,11 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc)
             current_acc += ADC_VC[2 * i + 1];
         }
 
-        float voltage_media = voltage_acc / 25.0f;
+         float voltage_media = voltage_acc / 25.0f;
         float current_media = current_acc / 25.0f;
 
         Voltage = 0.0122f * voltage_media;
-        Current = 0.18f * current_media - 350.10f;
+        Current = 0.19536f * current_media - 400.0f;
     }
 
     if (hadc->Instance == ADC2)
@@ -304,11 +304,11 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
             current_acc += ADC_VC[2 * i + 1];
         }
 
-        float voltage_media = voltage_acc / 25.0f;
+         float voltage_media = voltage_acc / 25.0f;
         float current_media = current_acc / 25.0f;
 
         Voltage = 0.0122f * voltage_media;
-        Current = 0.18f * current_media - 350.10f;
+        Current = 0.19536f * current_media - 400.0f;
     }
 
     if (hadc->Instance == ADC2)
