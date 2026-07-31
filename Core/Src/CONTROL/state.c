@@ -97,7 +97,7 @@ void FC_StartUp_StartUpPurge_State(void)
     {
     	H2_reaction_tracker();
         Fan_CMD(FAN_MAX_CMD);
-        SupplyValve_CMD(CLOSED);
+        SupplyValve_CMD(OPEN);
         PurgeValve_CMD(OPEN);   // conferir
         MainContactor_CMD(OPEN);
         ResistorContactor_CMD(OPEN);
