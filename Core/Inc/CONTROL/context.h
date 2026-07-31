@@ -51,8 +51,8 @@ typedef enum {
 /* --- LIMITES DE SEGURANÇA --- */
 #define MAX_TEMP             75
 #define MIN_TEMP            -10
-#define MAX_PRESSURE          0.69f
-#define MIN_PRESSURE          0.07f
+#define MAX_PRESSURE          0.56f
+#define MIN_PRESSURE          0.16f
 #define MAX_CURRENT           78
 #define MIN_CURRENT           -3
 #define MAX_VOLTAGE           50.6f
