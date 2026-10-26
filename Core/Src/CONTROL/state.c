@@ -30,11 +30,11 @@ void Run_State_Machine(void)
         case FC_STARTUP_STARTUPPURGE:
             FC_StartUp_StartUpPurge_State();
             break;
-        case FC_STARTUP_END:
-            FC_StartUp_End_State();
-            break;
         case FC_WARMUP:
             FC_WarmUp();
+            break;
+        case FC_STARTUP_END:
+            FC_StartUp_End_State();
             break;
         case FC_RUN:
             FC_Run_State();
