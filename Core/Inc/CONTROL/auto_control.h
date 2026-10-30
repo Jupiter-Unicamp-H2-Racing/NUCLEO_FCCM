@@ -3,8 +3,8 @@
 
 #include "context.h"
 
-void Automatic_Fan_Control(void);
-void Automatic_Purge_Control(void);
+void  Automatic_Fan_Control(void);
+void  Automatic_Purge_Control(void);
 float Calculate_OptTemp(void);
 
 #endif

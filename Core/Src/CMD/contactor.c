@@ -1,6 +1,6 @@
 #include "contactor.h"
 #include "context.h"
-#include "main.h"   // necessário para HAL_GPIO_WritePin e definições de pinos
+#include "main.h" // necessário para HAL_GPIO_WritePin e definições de pinos
 
 /* --- CONTATOR DO RESISTOR --- */
 void ResistorContactor_CMD(Valve_Status status)

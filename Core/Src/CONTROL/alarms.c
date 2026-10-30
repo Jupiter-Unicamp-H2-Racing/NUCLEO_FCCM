@@ -16,12 +16,12 @@ extern FDCAN_TxHeaderTypeDef CHECK;
 extern FDCAN_TxHeaderTypeDef BMS_CAN;
 
 /* --- VARIÁVEIS LOCAIS DE ALARME --- */
-Alarm_Status Alarm             = NO_ALARM;
-static uint32_t fault_start_time = 0;
-float    Current_To_Voltage    = 0;
-uint32_t fault                 = 0;
-uint32_t last_reading           = 0;
-int      Alarm_Entry           = 1;
+Alarm_Status    Alarm              = NO_ALARM;
+static uint32_t fault_start_time   = 0;
+float           Current_To_Voltage = 0;
+uint32_t        fault              = 0;
+uint32_t        last_reading       = 0;
+int             Alarm_Entry        = 1;
 
 /* --- VERIFICAÇÃO DE TENSÃO NOMINAL --- */
 void CheckVoltageNominal(void)
@@ -54,10 +54,9 @@ void CheckVoltageNominal(void)
     {
         if ((Time - last_reading) > 1000)
         {
-            Entry = 1;
+            Entry         = 1;
             FcActualState = FC_ALARM;
-            ERRO_C[2] = 1;
-            BMS[0] = 2;
+            ERRO_C[2]     = 1;
             SEND_CAN_Message();
         }
     }
@@ -76,30 +75,30 @@ void Check_Alarms(void)
         if (Temp >= MAX_TEMP || Temp <= MIN_TEMP)
         {
             fault_start_time = Time;
-            Alarm = ALARM_TEMP;
-            Alarm_Entry = 0;
+            Alarm            = ALARM_TEMP;
+            Alarm_Entry      = 0;
         }
         else if (Pressure >= MAX_PRESSURE ||
-                 (Pressure <= MIN_PRESSURE &&
+                 (Pressure <= 0 &&
                   (FcActualState == FC_STARTUP_STARTUPPURGE ||
                    FcActualState == FC_WARMUP ||
                    FcActualState == FC_RUN)))
         {
             fault_start_time = Time;
-            Alarm = ALARM_PRESSURE;
-            Alarm_Entry = 0;
+            Alarm            = ALARM_PRESSURE;
+            Alarm_Entry      = 0;
         }
         else if (Current >= MAX_CURRENT || Current <= MIN_CURRENT)
         {
             fault_start_time = Time;
-            Alarm = ALARM_CURRENT;
-            Alarm_Entry = 0;
+            Alarm            = ALARM_CURRENT;
+            Alarm_Entry      = 0;
         }
         else if (Voltage >= MAX_VOLTAGE || Voltage <= MIN_VOLTAGE)
         {
             fault_start_time = Time;
-            Alarm = ALARM_VOLTAGE;
-            Alarm_Entry = 0;
+            Alarm            = ALARM_VOLTAGE;
+            Alarm_Entry      = 0;
         }
     }
     else
@@ -110,16 +109,15 @@ void Check_Alarms(void)
             case ALARM_TEMP:
                 if (!(Temp >= MAX_TEMP || Temp <= MIN_TEMP))
                 {
-                    Alarm = NO_ALARM;
+                    Alarm       = FC_ALARM;
                     Alarm_Entry = 1;
                     break;
                 }
                 if (Time - fault_start_time >= ALARM_TIME_TEMP)
                 {
-                    Entry = 1;
+                    Entry         = 1;
                     FcActualState = FC_ALARM;
-                    ERRO_C[0] = 1;
-                    BMS[0] = 2;
+                    ERRO_C[0]     = 1;
                     SEND_CAN_Message();
                 }
                 break;
@@ -129,16 +127,15 @@ void Check_Alarms(void)
                       (Pressure <= MIN_PRESSURE &&
                        (FcActualState == FC_STARTUP_STARTUPPURGE || FcActualState == FC_RUN))))
                 {
-                    Alarm = NO_ALARM;
+                    Alarm       = FC_ALARM;
                     Alarm_Entry = 1;
                     break;
                 }
                 if (Time - fault_start_time >= ALARM_TIME_PRESSURE)
                 {
-                    Entry = 1;
+                    Entry         = 1;
                     FcActualState = FC_ALARM;
-                    ERRO_C[3] = 1;
-                    BMS[0] = 2;
+                    ERRO_C[3]     = 1;
                     SEND_CAN_Message();
                 }
                 break;
@@ -146,16 +143,15 @@ void Check_Alarms(void)
             case ALARM_CURRENT:
                 if (!(Current >= MAX_CURRENT || Current <= MIN_CURRENT))
                 {
-                    Alarm = NO_ALARM;
+                    Alarm       = FC_ALARM;
                     Alarm_Entry = 1;
                     break;
                 }
                 if (Time - fault_start_time >= ALARM_TIME_CURRENT)
                 {
-                    Entry = 1;
+                    Entry         = 1;
                     FcActualState = FC_ALARM;
-                    ERRO_C[1] = 1;
-                    BMS[0] = 2;
+                    ERRO_C[1]     = 1;
                     SEND_CAN_Message();
                 }
                 break;
@@ -163,16 +159,15 @@ void Check_Alarms(void)
             case ALARM_VOLTAGE:
                 if (!(Voltage >= MAX_VOLTAGE || Voltage <= MIN_VOLTAGE))
                 {
-                    Alarm = NO_ALARM;
+                    Alarm       = NO_ALARM;
                     Alarm_Entry = 1;
                     break;
                 }
                 if (Time - fault_start_time >= ALARM_TIME_VOLTAGE)
                 {
-                    Entry = 1;
-                    FcActualState = FC_ALARM;
-                    ERRO_C[2] = 1;
-                    BMS[0] = 2;
+                    Entry         = 1;
+                    FcActualState = FC_SHUTDOWN;
+                    ERRO_C[2]     = 1;
                     SEND_CAN_Message();
                 }
                 break;

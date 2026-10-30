@@ -1,35 +1,37 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
 
-#include "main.h"   // Garante que tipos como uint32_t e HAL_StatusTypeDef funcionem
+#include "main.h" // Garante que tipos como uint32_t e HAL_StatusTypeDef funcionem
 
 /* --- LIMITES DA FAN --- */
-#define FAN_MAX_CMD   100
-#define FAN_MIN_CMD   10
+#define FAN_MAX_CMD 100
+#define FAN_MIN_CMD 10
 
 /* --- DURAÇÃO DOS ESTADOS (ms) --- */
-#define FAN_SPOOLUP_DURATION    3000
-#define FAN_SU_PURGE_DURATION   200
-#define WARMUP_DURATION         12000
-#define SHUTDOWN_DURATION       180000
+#define FAN_SPOOLUP_DURATION  3000
+#define FAN_SU_PURGE_DURATION 200
+#define WARMUP_DURATION       12000
+#define SHUTDOWN_DURATION     180000
 
 /* --- CONTROLE DE PURGA --- */
-#define RESET_TIME        3000
-#define PURGE_INTERVAL    2300   // não é tempo, é amp * s
-#define PURGE_DURATION     300
+#define RESET_TIME     3000
+#define PURGE_INTERVAL 2300 // não é tempo, é amp * s
+#define PURGE_DURATION 300
 
 /* --- CONSTANTES DO PID (controle da fan) --- */
-#define P_CONST 8
-#define I_CONST 0
+#define P_CONST 5
+#define I_CONST 0.2f
 #define D_CONST 0
 
 /* --- ENUMS (TIPOS DE DADOS) --- */
-typedef enum {
+typedef enum
+{
     CLOSED = 0,
     OPEN   = 1
 } Valve_Status;
 
-typedef enum {
+typedef enum
+{
     FC_STANDBY              = 0x00U,
     FC_STARTUP_FANSPOOLUP   = 0x01U,
     FC_STARTUP_STARTUPPURGE = 0x02U,
@@ -40,7 +42,8 @@ typedef enum {
     FC_ALARM                = 0x07U
 } Fc_State;
 
-typedef enum {
+typedef enum
+{
     ALARM_TEMP     = 0x00U,
     ALARM_PRESSURE = 0x01U,
     ALARM_CURRENT  = 0x02U,
@@ -49,23 +52,23 @@ typedef enum {
 } Alarm_Status;
 
 /* --- LIMITES DE SEGURANÇA --- */
-#define MAX_TEMP             75
+#define MAX_TEMP            75
 #define MIN_TEMP            -10
-#define MAX_PRESSURE          0.56f
-#define MIN_PRESSURE          0.16f
-#define MAX_CURRENT           78
-#define MIN_CURRENT           -3
-#define MAX_VOLTAGE           50.6f
-#define MIN_VOLTAGE          -10.0f
+#define MAX_PRESSURE        0.70f
+#define MIN_PRESSURE        -0.01f
+#define MAX_CURRENT         78
+#define MIN_CURRENT         -3
+#define MAX_VOLTAGE         50.6f
+#define MIN_VOLTAGE         -10.0f
 #define ALARM_TIME_TEMP     5000
-#define ALARM_TIME_PRESSURE 1000
-#define ALARM_TIME_CURRENT  2000
+#define ALARM_TIME_PRESSURE 3000
+#define ALARM_TIME_CURRENT  5000
 #define ALARM_TIME_VOLTAGE  5000
 
 /* --- VARIÁVEIS GLOBAIS: ESTADO DO SISTEMA --- */
 extern Alarm_Status Alarm_Type;
-extern Fc_State      FcActualState;
-extern int           Entry;
+extern Fc_State     FcActualState;
+extern int          Entry;
 
 /* --- VARIÁVEIS GLOBAIS: SENSORES --- */
 extern float    Voltage;
@@ -76,9 +79,9 @@ extern uint32_t Time;
 extern int      Fan_power;
 
 /* --- CONSUMO DE HIDROGÊNIO --- */
-#define H2_TOTAL_MASS         73.0     // total de hidrogênio em g
-#define H2_PURGE_CONSUMPTION   0.07728 // gasto de uma purga em g
-#define H2_REACTION_PER_SEC_A   0.0004784 // gasto por segundo por amp em g*s^-1*A^-1
+#define H2_TOTAL_MASS         73.0      // total de hidrogênio em g
+#define H2_PURGE_CONSUMPTION  0.07728   // gasto de uma purga em g
+#define H2_REACTION_PER_SEC_A 0.0004784 // gasto por segundo por amp em g*s^-1*A^-1
 
 extern uint32_t last_H2_calc;
 extern float    H2_reacted;
@@ -91,7 +94,7 @@ extern int      purgas;
 extern uint32_t MAILBOX;
 extern uint8_t  DATA[8];
 extern uint8_t  ERRO_C[8];
-extern uint8_t BMS[8];
+extern uint8_t  BMS[8];
 
 /* --- STATUS DOS ATUADORES --- */
 extern Valve_Status PurgeValveStatus;
@@ -111,5 +114,13 @@ extern uint32_t fanspoolup_start_time;
 extern uint32_t startuppurge_start_time;
 extern uint32_t warmup_start_time;
 extern uint32_t shutdown_start_time;
+
+/* --- CONTROLE DA INICIALIZAÇÃO --- */
+extern int      Start;
+extern int      Delay_Restart;
+extern uint8_t  ForceSupplyActive;
+extern uint8_t  ForcePurgeActive;
+extern uint32_t ForceSupplyOpenTime;
+extern uint32_t ForcePurgeOpenTime;
 
 #endif // CONTEXT_H

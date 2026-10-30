@@ -4,9 +4,9 @@
 #include "valve.h"
 
 /* --- VARIÁVEIS LOCAIS --- */
-float Topt;              // temperatura ótima calculada (uso interno deste arquivo)
-int   PurgeValveCmd  = CLOSED;
-int   PurgeActive    = 0;
+float          Topt; // temperatura ótima calculada (uso interno deste arquivo)
+int            PurgeValveCmd = CLOSED;
+int            PurgeActive   = 0;
 extern uint8_t ForcePurgeActive;
 
 /* --- CÁLCULO DA TEMPERATURA ÓTIMA --- */
@@ -26,7 +26,7 @@ void Automatic_Fan_Control(void)
     // Se passou muito tempo, reseta as variáveis integrais (anti-windup reset)
     if (Time - FanLastCallTime >= RESET_TIME)
     {
-        LastITerm = PreviousFanCmd;
+        LastITerm    = PreviousFanCmd;
         LastTempDiff = TempDiff;
     }
 
@@ -34,7 +34,7 @@ void Automatic_Fan_Control(void)
     float PTerm = P_CONST * TempDiff;
 
     // Termo integral
-    float dt = ((float)Time - (float)FanLastCallTime) / 1000.0f;
+    float dt    = ((float)Time - (float)FanLastCallTime) / 1000.0f;
     float ITerm = (I_CONST * TempDiff * dt) + LastITerm;
 
     // Limitação do termo integral
@@ -69,9 +69,9 @@ void Automatic_Fan_Control(void)
 
     // Atualiza variáveis estáticas de controle
     FanLastCallTime = Time;
-    LastTempDiff = TempDiff;
-    LastITerm = ITerm;
-    PreviousFanCmd = UpdatedFanCmd;
+    LastTempDiff    = TempDiff;
+    LastITerm       = ITerm;
+    PreviousFanCmd  = UpdatedFanCmd;
 
     // Envia o comando para a fan
     Fan_CMD((int)UpdatedFanCmd);
@@ -82,7 +82,7 @@ void Automatic_Purge_Control(void)
 {
     if (ForcePurgeActive)
     {
-        return;   // force tem prioridade; ele mesmo fecha a válvula quando o tempo vencer
+        return; // force tem prioridade; ele mesmo fecha a válvula quando o tempo vencer
     }
 
     if (PurgeValveStatus == CLOSED && Current > 0)
@@ -97,9 +97,9 @@ void Automatic_Purge_Control(void)
     {
         if (amp_segundo >= PURGE_INTERVAL)
         {
-            amp_segundo = 0.0f;
+            amp_segundo    = 0.0f;
             PurgeStartTime = Time;
-            PurgeActive = 1;
+            PurgeActive    = 1;
             PurgeValve_CMD(OPEN);
         }
         else

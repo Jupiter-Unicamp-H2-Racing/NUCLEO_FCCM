@@ -15,16 +15,16 @@ extern FDCAN_TxHeaderTypeDef CHECK;
 extern FDCAN_TxHeaderTypeDef ERROR_CAN;
 extern FDCAN_FilterTypeDef   sFilterConfig;
 extern FDCAN_RxHeaderTypeDef RxHeader;
-extern uint8_t RxData[8];
+extern uint8_t               RxData[8];
 
 /* --- CONFIGURAÇÃO DO FILTRO GLOBAL DO FDCAN2 --- */
 void config(void)
 {
     HAL_FDCAN_ConfigGlobalFilter(&hfdcan2,
-        FDCAN_ACCEPT_IN_RX_FIFO0,   // NonMatchingStd
-        FDCAN_ACCEPT_IN_RX_FIFO0,   // NonMatchingExt
-        FDCAN_FILTER_REMOTE,
-        FDCAN_FILTER_REMOTE);
+                                 FDCAN_ACCEPT_IN_RX_FIFO0, // NonMatchingStd
+                                 FDCAN_ACCEPT_IN_RX_FIFO0, // NonMatchingExt
+                                 FDCAN_FILTER_REMOTE,
+                                 FDCAN_FILTER_REMOTE);
 }
 
 /*
@@ -36,50 +36,50 @@ void config(void)
 /* --- DECLARAÇÃO DO HEADER DE INFO DA FCCM --- */
 void declare_can_CHECK(void)
 {
-    CHECK.Identifier = ID_CHECK;
-    CHECK.IdType = FDCAN_EXTENDED_ID;
-    CHECK.TxFrameType = FDCAN_DATA_FRAME;
-    CHECK.DataLength = FDCAN_DLC_BYTES_8;
+    CHECK.Identifier          = ID_CHECK;
+    CHECK.IdType              = FDCAN_EXTENDED_ID;
+    CHECK.TxFrameType         = FDCAN_DATA_FRAME;
+    CHECK.DataLength          = FDCAN_DLC_BYTES_8;
     CHECK.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-    CHECK.BitRateSwitch = FDCAN_BRS_OFF;
-    CHECK.FDFormat = FDCAN_CLASSIC_CAN;   // mantém modo CAN normal no barramento FDCAN
-    CHECK.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
-    CHECK.MessageMarker = 0;
+    CHECK.BitRateSwitch       = FDCAN_BRS_OFF;
+    CHECK.FDFormat            = FDCAN_CLASSIC_CAN; // mantém modo CAN normal no barramento FDCAN
+    CHECK.TxEventFifoControl  = FDCAN_NO_TX_EVENTS;
+    CHECK.MessageMarker       = 0;
 }
 
 /* --- DECLARAÇÃO DO HEADER DE ERRO --- */
 void declare_can_ERROR(void)
 {
-    ERROR_CAN.Identifier = ID_ERROR;
-    ERROR_CAN.IdType = FDCAN_EXTENDED_ID;
-    ERROR_CAN.TxFrameType = FDCAN_DATA_FRAME;
-    ERROR_CAN.DataLength = FDCAN_DLC_BYTES_8;
+    ERROR_CAN.Identifier          = ID_ERROR;
+    ERROR_CAN.IdType              = FDCAN_EXTENDED_ID;
+    ERROR_CAN.TxFrameType         = FDCAN_DATA_FRAME;
+    ERROR_CAN.DataLength          = FDCAN_DLC_BYTES_8;
     ERROR_CAN.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-    ERROR_CAN.BitRateSwitch = FDCAN_BRS_OFF;
-    ERROR_CAN.FDFormat = FDCAN_CLASSIC_CAN;
-    ERROR_CAN.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
-    ERROR_CAN.MessageMarker = 0;
+    ERROR_CAN.BitRateSwitch       = FDCAN_BRS_OFF;
+    ERROR_CAN.FDFormat            = FDCAN_CLASSIC_CAN;
+    ERROR_CAN.TxEventFifoControl  = FDCAN_NO_TX_EVENTS;
+    ERROR_CAN.MessageMarker       = 0;
 }
 
 void declare_can_BMS(void)
 {
-    ERROR_CAN.Identifier = BMS_ID;
-    ERROR_CAN.IdType = FDCAN_EXTENDED_ID;
-    ERROR_CAN.TxFrameType = FDCAN_DATA_FRAME;
-    ERROR_CAN.DataLength = FDCAN_DLC_BYTES_8;
+    ERROR_CAN.Identifier          = BMS_ID;
+    ERROR_CAN.IdType              = FDCAN_EXTENDED_ID;
+    ERROR_CAN.TxFrameType         = FDCAN_DATA_FRAME;
+    ERROR_CAN.DataLength          = FDCAN_DLC_BYTES_8;
     ERROR_CAN.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-    ERROR_CAN.BitRateSwitch = FDCAN_BRS_OFF;
-    ERROR_CAN.FDFormat = FDCAN_CLASSIC_CAN;
-    ERROR_CAN.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
-    ERROR_CAN.MessageMarker = 0;
+    ERROR_CAN.BitRateSwitch       = FDCAN_BRS_OFF;
+    ERROR_CAN.FDFormat            = FDCAN_CLASSIC_CAN;
+    ERROR_CAN.TxEventFifoControl  = FDCAN_NO_TX_EVENTS;
+    ERROR_CAN.MessageMarker       = 0;
 }
 
 /* --- MONTAGEM DO PAYLOAD DE TELEMETRIA (DATA[8]) --- */
 void Slice_DATA(void)
 {
-    uint16_t Fccurrent  = (uint16_t)(Current);
-    uint16_t Fctemp     = (uint16_t)(Temp);
-    uint16_t Fcvoltage  = (uint16_t)(Voltage);
+    uint16_t Fccurrent  = (uint16_t)(Current / 100);
+    uint16_t Fctemp     = (uint16_t)(Temp * 10);
+    uint16_t Fcvoltage  = (uint16_t)(Voltage * 10);
     uint8_t  Fcpressure = (uint8_t)(Pressure * 100);
     uint8_t  H2         = (uint8_t)(H2_consumed);
 

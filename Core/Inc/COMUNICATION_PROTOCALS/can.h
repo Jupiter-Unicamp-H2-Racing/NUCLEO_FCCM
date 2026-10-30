@@ -18,7 +18,7 @@ um header vai ser criado para o envio de informações da fccm,
 e o outro vai ser criado para apenas as mensagens de erro
 */
 
-#define BMS_ID 0x04901002
+#define BMS_ID 0x04800000
 
 /*
  * para a comunicação da fccm, esse ID específico é criado para

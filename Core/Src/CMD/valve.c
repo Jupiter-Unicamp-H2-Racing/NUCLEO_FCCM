@@ -1,14 +1,14 @@
 #include "valve.h"
 #include "context.h"
-#include "main.h"   // necessário para HAL_GPIO e TIM1
+#include "main.h" // necessário para HAL_GPIO e TIM1
 
 /* --- RASTREADOR DE H2 CONSUMIDO POR REAÇÃO --- */
 void H2_reaction_tracker(void)
 {
-    delta_t = ((float)(Time - last_H2_calc)) / 1000.0f;   // segundos desde a última chamada
+    delta_t      = ((float)(Time - last_H2_calc)) / 1000.0f; // segundos desde a última chamada
     last_H2_calc = Time;
 
-    if (Current > 0)   // só conta reação quando há corrente sendo gerada
+    if (Current > 0) // só conta reação quando há corrente sendo gerada
     {
         H2_reacted = H2_REACTION_PER_SEC_A * Current * delta_t;
 
