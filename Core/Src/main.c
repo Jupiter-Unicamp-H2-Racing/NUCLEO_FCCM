@@ -191,11 +191,11 @@ int main(void)
     /* --- Loop principal --- */
     while (1)
     {
-        SEND_CAN_Message();
 
         if (flag_5ms)
         {
             Time = HAL_GetTick();
+            SEND_CAN_Message();
             StartEndECU();
             Receive_CAN_Message();
             Run_State_Machine();

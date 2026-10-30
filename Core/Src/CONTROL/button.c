@@ -41,7 +41,10 @@ void StartEndECU(void)
 /* --- FORÇA SUPRIMENTO (abre ao apertar, fecha após 500 ms) --- */
 void ForceSupply(void)
 {
-    if (HAL_GPIO_ReadPin(FORCE_SUPPLY_GPIO_Port, FORCE_SUPPLY_Pin) == GPIO_PIN_SET && !ForceSupplyActive)
+    if (HAL_GPIO_ReadPin(FORCE_SUPPLY_GPIO_Port, FORCE_SUPPLY_Pin) == GPIO_PIN_SET 
+    && !ForceSupplyActive
+    && FcActualState != FC_ALARM
+    && FcActualState != FC_SHUTDOWN)
     {
         SupplyValve_CMD(OPEN);
         ForceSupplyActive   = 1;
@@ -59,7 +62,10 @@ void ForceSupply(void)
 /* --- FORÇA PURGA (abre ao apertar, fecha após 500 ms) --- */
 void ForcePurge(void)
 {
-    if (HAL_GPIO_ReadPin(FORCE_PURGE_GPIO_Port, FORCE_PURGE_Pin) == GPIO_PIN_SET && !ForcePurgeActive)
+    if (HAL_GPIO_ReadPin(FORCE_PURGE_GPIO_Port, FORCE_PURGE_Pin) == GPIO_PIN_SET 
+    && !ForcePurgeActive
+    && FcActualState != FC_ALARM
+    && FcActualState != FC_SHUTDOWN)
     {
         PurgeValve_CMD(OPEN);
         ForcePurgeActive   = 1;
